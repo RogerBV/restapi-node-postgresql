@@ -1,17 +1,28 @@
-    
+const dboperations = require("./dboperations")
 
 
 
-function sendMessage (){
+function sendAlert (groupGoogleId){
+    console.log(groupGoogleId)
+    dboperations.getSupervisorDevicesByGroupGoogleId(groupGoogleId).then(result=>{
+
+        result.forEach(element => {
+            sendMessage(element.fcmtoken)
+        });
+    })
+}
+
+function sendMessage(fcmtoken){
     var FCM = require('fcm-node');
     var serverKey = 'AAAAQHFqesw:APA91bFI8siEND-8Vdasa2VJMRrNcN2_a0wvF3_sJrT6a5ETFUOb8gLwG45SM8A9lv-SFufol2s5RbXK6AGpzfIZqpiYgKqoaxF7ZLrK6OU70aMLIf3fDWv7sWE6O4F9YzniMFaeYB0N';
     var fcm = new FCM(serverKey);
 
     var message = {
-    to:'eBupW4HqR3SQaArVWTS4WU:APA91bEpCdbK17OuWNgCQ-7ut0MTWbx_A58Eft3PLuahVWKZIiXw4Tbi2sUdxzi2H9lnNjsPdbnNmdXzGc2NVMOFQZETwHLpTRIZN3yDKnebdoo7A2k26MldMH5ffGoTU9kcGUjWwr3w',
+    to: fcmtoken,
         notification: {
-            title: 'NotifcatioTestAPP',
-            body: '{"Message from node js app"}',
+            title: 'Alerta',
+            body: 'Se ha encontrado que la persona salio de su hogar',
+            click_action: "OPEN_ACTIVITY_1"
         },
 
         data: { //you can send only notification or only data(or include both)
@@ -33,9 +44,7 @@ function sendMessage (){
     });
 }
 
-sendMessage();
-
 module.exports = {
-    sendMessage
+    sendAlert
 }
 

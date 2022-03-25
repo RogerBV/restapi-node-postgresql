@@ -28,6 +28,29 @@ router.route("/getPersons").get((request,response)=> {
     })*/
 })
 
+router.route("/sendAlert").get((request,response)=>{
+    try{
+        const groupGoogleId = request.query.groupGoogleId
+        console.log("groupGoogleId: "+groupGoogleId)
+        fcmApp.sendAlert(groupGoogleId)
+        response.json(true)
+    }catch(error){
+        console.log("error")
+        response.json(false)
+    }
+})
+
+router.route("/getSupervisedDeviceByGroupGoogleId").get((request,response)=>{
+    try{
+        const groupGoogleId = request.query.groupGoogleId
+        dboperations.getSupervisedDeviceByGroupGoogleId(groupGoogleId).then(result=>{
+            response.json(result)
+        })
+    }catch(error){
+        console.log("error")
+        response.json(false)
+    }
+})
 
 router.route("/getCoordinatesByPerson").get((request,response)=> {
     const personId = request.query.personId;
@@ -48,9 +71,15 @@ router.route("/insertGroupGoogle").post((request,response)=> {
 
 router.route("/getGroupGoogleByGoogleId").get((request,response)=> {
     const googleId = request.query.googleId;
-    console.log(googleId)
     dboperations.getGroupGoogleByGoogleId(googleId).then(result=>{
         console.log(result)
+        response.json(result)
+    })
+})
+
+router.route("/getHomesByDeviceId").get((request,response)=> {
+    const deviceId = request.query.deviceId
+    dboperations.getHomesByDeviceId(deviceId).then(result=>{
         response.json(result)
     })
 })
@@ -61,9 +90,8 @@ router.route("/insertDevice").post((request,response)=> {
     var fcmtoken = request.query.fcmtoken
     var type = request.query.type;
 
-    sendPushNotification();
-
     dboperations.insertDevice(imei,GroupGoogleId,fcmtoken,type).then(result=>{
+        console.log(result)
         response.json(result)
     })
 })
@@ -73,6 +101,7 @@ router.route("/insertCoordinates").post((request,response)=> {
     var longitude = request.query.longitude;
     var latitude = request.query.latitude;
     var deviceId = request.query.deviceId;
+    
     dboperations.insertCoordinates(datetime,longitude,latitude,deviceId).then(result=>{
         console.log(result)
         response.json(result)
