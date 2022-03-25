@@ -3,7 +3,7 @@ const dboperations = require("./dboperations")
 
 
 function sendAlert (groupGoogleId){
-    console.log(groupGoogleId)
+    //console.log(groupGoogleId)
     dboperations.getSupervisorDevicesByGroupGoogleId(groupGoogleId).then(result=>{
 
         result.forEach(element => {
@@ -37,8 +37,8 @@ function sendMessage(fcmtoken){
             console.log("Respponse:! "+response);
         } else {
             // showToast("Successfully sent with response");
-            console.log("sendMessage")
-            console.log("Successfully sent with response: ", response);
+            //console.log("sendMessage")
+            //console.log("Successfully sent with response: ", response);
         }
     
     });

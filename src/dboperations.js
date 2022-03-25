@@ -18,9 +18,9 @@ const pool = new Pool({
     }
 }
 
-async function getCoordinates(personId) {
+async function getCoordinates(deviceId) {
     try{
-        const response = await pool.query("SELECT * FROM Coordinates WHERE PersonId="+personId)
+        const response = await pool.query("SELECT * FROM Coordinates WHERE deviceId="+deviceId)
         return response.rows;
     }catch(error){
         console.log(error);
@@ -48,7 +48,7 @@ async function getSupervisorDevicesByGroupGoogleId(groupGoogleId){
 async function getSupervisedDeviceByGroupGoogleId(groupGoogleId){
     try{
         const response = await pool.query("SELECT * FROM Device WHERE groupgoogleid="+groupGoogleId+" and type = 1")
-        return response.rows;
+        return response.rows[0].deviceid;
     }catch(error){
         console.log(error);
     }
