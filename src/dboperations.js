@@ -93,18 +93,25 @@ async function getHomesByDeviceId(deviceId) {
 }
 
 
-async function insertDevice(imei, GroupGoogleId, fcmtoken, type){
+async function insertDevice(imei, GroupGoogleId, fcmtoken, type, mobileNumber){
     try {
-        const responseSelect = await pool.query("SELECT * FROM Device WHERE imei='"+imei+"' and groupgoogleid='"+GroupGoogleId+"'")
+        const responseSelect = await pool.query("SELECT * FROM Device WHERE imei='"+imei+"' and groupgoogleid='"+GroupGoogleId+"' AND mobilenumber='"+mobileNumber+"'")
 
         if(responseSelect.rows == 0)
         {
             var result = await pool.query(
-                `INSERT INTO Device (imei,GroupGoogleId,fcmtoken,type)  
-                 VALUES ($1, $2, $3, $4) RETURNING *`, [imei,GroupGoogleId,fcmtoken,type]); // sends queries
+                `INSERT INTO Device (imei,GroupGoogleId,fcmtoken,type,mobilenumber)  
+                 VALUES ($1, $2, $3, $4, $5) RETURNING *`, [imei,GroupGoogleId,fcmtoken,type,mobileNumber]); // sends queries
             return result.rows[0];
         }else{
-            return responseSelect.rows[0];
+            
+            const query = `UPDATE Device 
+                   SET fcmtoken = $3, mobileNumber = $4 
+                   WHERE imei = $1 AND GroupGoogleId = $2 AND mobileNumber = $4`;
+
+            return await pool.query(query, [imei, GroupGoogleId, fcmtoken, mobileNumber]); // sends queries
+
+            //return responseSelect.rows[0];
         }        
     } catch (error) {
         console.error(error.stack);

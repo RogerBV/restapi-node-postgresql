@@ -90,8 +90,9 @@ router.route("/insertDevice").post((request,response)=> {
     var GroupGoogleId = request.query.GroupGoogleId;
     var fcmtoken = request.query.fcmtoken
     var type = request.query.type;
+    var mobileNumber = request.query.mobileNumber
 
-    dboperations.insertDevice(imei,GroupGoogleId,fcmtoken,type).then(result=>{
+    dboperations.insertDevice(imei,GroupGoogleId,fcmtoken,type,mobileNumber).then(result=>{
         console.log(result)
         response.json(result)
     })
