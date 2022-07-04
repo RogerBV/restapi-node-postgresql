@@ -8,6 +8,8 @@ var app = express();
 
 const dboperations = require("./dboperations")
 
+const dboperationsPetHistory = require("./dbOperationsPetHistory")
+
 
 var router = express.Router();
 
@@ -20,6 +22,11 @@ router.use((request,response,next)=>{
     next();
 });
 
+router.route("/getVets").get((request,response)=> {
+    dboperationsPetHistory.getVets().then(result =>{
+        response.json(result)
+    })
+})
 
 router.route("/getPersons").get((request,response)=> {
     sendPushNotification();
