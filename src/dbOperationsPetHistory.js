@@ -20,7 +20,7 @@ async function getVets(){
 
 async function getPets(){
     try{
-        const response = await pool.query("SELECT * FROM Pet")
+        const response = await pool.query("SELECT * FROM v_pets")
         return response.rows
     }catch(error){
         console.log(error)
