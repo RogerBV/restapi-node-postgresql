@@ -28,6 +28,13 @@ router.route("/getVets").get((request,response)=> {
     })
 })
 
+router.route("/getPetsByOwnerId").get((request,response)=> {
+    var ownerId = request.query.ownerId;
+    dboperationsPetHistory.getPetsByOwnerId(ownerId).then(result =>{
+        response.json(result)
+    })
+})
+
 router.route("/getPersons").get((request,response)=> {
     sendPushNotification();
     /*dboperations.getPersons().then(result=>{
