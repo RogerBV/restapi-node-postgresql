@@ -17,6 +17,16 @@ async function getVets(){
         console.log(error)
     }
 }
+
+async function getPets(){
+    try{
+        const response = await pool.query("SELECT * FROM Pet")
+        return response.rows
+    }catch(error){
+        console.log(error)
+    }
+}
+
 async function getPetsByOwnerId(ownerId){
     try{
         const response = await pool.query("SELECT * FROM Pet P INNER JOIN Owner O ON P.ownerid = O.id where P.ownerid="+ownerId)
@@ -28,5 +38,6 @@ async function getPetsByOwnerId(ownerId){
 
 module.exports = {
     getVets: getVets,
+    getPets: getPets,
     getPetsByOwnerId:getPetsByOwnerId
 }

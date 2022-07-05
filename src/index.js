@@ -8,7 +8,8 @@ var app = express();
 
 const dboperations = require("./dboperations")
 
-const dboperationsPetHistory = require("./dbOperationsPetHistory")
+const dboperationsPetHistory = require("./dbOperationsPetHistory");
+const dbOperationsPetHistory = require("./dbOperationsPetHistory");
 
 
 var router = express.Router();
@@ -31,6 +32,12 @@ router.route("/getVets").get((request,response)=> {
 router.route("/getPetsByOwnerId").get((request,response)=> {
     var ownerId = request.query.ownerId;
     dboperationsPetHistory.getPetsByOwnerId(ownerId).then(result =>{
+        response.json(result)
+    })
+})
+
+router.route("/getPets").get((request,response)=>{
+    dbOperationsPetHistory.getPets().then(result=>{
         response.json(result)
     })
 })
