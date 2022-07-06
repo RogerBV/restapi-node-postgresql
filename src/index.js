@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api',router);
+console.log(__dirname)
+
 
 router.use((request,response,next)=>{
     next();
@@ -142,6 +144,6 @@ function sendPushNotification()
 
 
 
-
+app.use(express.static(__dirname +'/public'))
 app.listen(3000)
 console.log("Server on port 3000")
