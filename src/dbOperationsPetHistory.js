@@ -31,10 +31,12 @@ async function getPetsByOwnerId(ownerId){
     try{
         const response = await pool.query("SELECT * FROM Pet P INNER JOIN Owner O ON P.ownerid = O.id where P.ownerid="+ownerId)
         return response.rows
+
     }catch(error){
         console.log(error)
     }
 }
+
 
 module.exports = {
     getVets: getVets,
