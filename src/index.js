@@ -26,13 +26,14 @@ router.use((request,response,next)=>{
 });
 
 router.route("/getVets").get((request,response)=> {
+    console.log("getVets")
     dboperationsPetHistory.getVets().then(result =>{
         response.json(result)
     })
 })
 
 router.route("/getPetById").get((request,response)=> {
-    var petId = request.query.Id;
+    var petId = request.query.id;
     dboperationsPetHistory.getPetById(petId).then(result =>{
         response.json(result)
     })
@@ -46,6 +47,7 @@ router.route("/getPetsByOwnerId").get((request,response)=> {
 })
 
 router.route("/getPets").get((request,response)=>{
+    console.log("getPets")
     dbOperationsPetHistory.getPets().then(result=>{
         response.json(result)
     })
