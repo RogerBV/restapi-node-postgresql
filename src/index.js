@@ -31,6 +31,13 @@ router.route("/getVets").get((request,response)=> {
     })
 })
 
+router.route("/getVetById").get((request,response)=> {
+    var petId = request.query.Id;
+    dboperationsPetHistory.getPetById(petId).then(result =>{
+        response.json(result)
+    })
+})
+
 router.route("/getPetsByOwnerId").get((request,response)=> {
     var ownerId = request.query.ownerId;
     dboperationsPetHistory.getPetsByOwnerId(ownerId).then(result =>{

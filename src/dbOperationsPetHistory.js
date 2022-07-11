@@ -37,9 +37,19 @@ async function getPetsByOwnerId(ownerId){
     }
 }
 
+async function getPetById(id){
+    try{
+        const response = await pool.query("SELECT * FROM v_pets where id="+id)
+        return response.rows
+    }catch(error){
+        console.log(error)
+    }
+}
+
 
 module.exports = {
     getVets: getVets,
     getPets: getPets,
+    getPetById:getPetById,
     getPetsByOwnerId:getPetsByOwnerId
 }
