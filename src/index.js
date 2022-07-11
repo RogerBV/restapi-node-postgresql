@@ -31,7 +31,7 @@ router.route("/getVets").get((request,response)=> {
     })
 })
 
-router.route("/getVetById").get((request,response)=> {
+router.route("/getPetById").get((request,response)=> {
     var petId = request.query.Id;
     dboperationsPetHistory.getPetById(petId).then(result =>{
         response.json(result)
