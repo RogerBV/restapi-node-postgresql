@@ -140,11 +140,15 @@ router.route("/insertCoordinates").post((request,response)=> {
         //console.log(result)
         response.json(result)
     })
-
-    
-
 })
 
+router.route("/getDeviceByEmail").get((request,response)=> {
+    const email = request.query.email;
+    dboperations.getDeviceByEmail(email).then(result=>{
+        console.log(result)
+        response.json(result)
+    })
+})
 
 function sendPushNotification()
 {

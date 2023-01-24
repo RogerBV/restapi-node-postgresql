@@ -3,8 +3,8 @@ const { Pool } = require("pg");
 const pool = new Pool({
     host:"oregon-postgres.render.com",
     user:"rbgc",
-    password:"FLHvI5DFvGQKBb1BbEPzZl8yHVqg2H50",
-    database:"dbcuidarte",
+    password:"OL16NN1wzcQrMFIjhtGUvGLfWUbwAZ5L",
+    database:"dbcuidarte_e47t",
     port:"5432",
     ssl:true
 });
@@ -131,6 +131,14 @@ async function insertCoordinates(datetime,longitude,latitude,deviceId){
     }
 }
 
+async function getDeviceByEmail(email){
+    try{
+        const response = await pool.query("SELECT * FROM device WHERE email='"+email+"'")
+        return response.rows;
+    }catch(error){
+        console.error(error);
+    }
+}
 
 
 module.exports = {
@@ -143,5 +151,6 @@ module.exports = {
     getHomesByDeviceId,
     getDevicesByGroupGoogleId,
     getSupervisorDevicesByGroupGoogleId,
-    getSupervisedDeviceByGroupGoogleId
+    getSupervisedDeviceByGroupGoogleId,
+    getDeviceByEmail
 }
