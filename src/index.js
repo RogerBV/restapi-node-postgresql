@@ -119,12 +119,14 @@ router.route("/getHomesByDeviceId").get((request,response)=> {
 
 router.route("/insertDevice").post((request,response)=> {
     var imei = request.query.IMEI;
-    var GroupGoogleId = request.query.GroupGoogleId;
-    var fcmtoken = request.query.fcmtoken
-    var type = request.query.type;
     var mobileNumber = request.query.mobileNumber
+    var fcmtoken = request.query.fcmtoken
+    var email = request.query.email;
+    var userName = request.query.userName;
+    var type = request.query.type;
+    
 
-    dboperations.insertDevice(imei,GroupGoogleId,fcmtoken,type,mobileNumber).then(result=>{
+    dboperations.insertDevice(imei,mobileNumber,fcmtoken,email, userName, type).then(result=>{
         console.log(result)
         response.json(result)
     })
