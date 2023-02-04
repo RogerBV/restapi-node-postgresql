@@ -100,7 +100,7 @@ async function insertDevice(imei, mobileNumber, fcmtoken, email, userName, type)
         if(responseSelect.rows == 0)
         {
             var result = await pool.query(
-                `INSERT INTO Device (imei,mobilenumber,fcmtoken,email,userName, type)  
+                `INSERT INTO Device (imei,mobilenumber,fcmtoken,email,userName, usertype)  
                  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`, [imei,mobileNumber,fcmtoken,email, userName, type]); // sends queries
             return result.rows[0];
         }else{
