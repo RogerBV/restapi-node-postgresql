@@ -62,8 +62,7 @@ router.route("/getPersons").get((request,response)=> {
 
 router.route("/sendAlert").get((request,response)=>{
     try{
-        const groupGoogleId = request.query.groupGoogleId
-        //console.log("groupGoogleId: "+groupGoogleId)
+        const groupGoogleId = request.query.familiargroupid
         fcmApp.sendAlert(groupGoogleId)
         response.json(true)
     }catch(error){
@@ -74,8 +73,8 @@ router.route("/sendAlert").get((request,response)=>{
 
 router.route("/getSupervisedDeviceByGroupGoogleId").get((request,response)=>{
     try{
-        const groupGoogleId = request.query.groupGoogleId
-        dboperations.getSupervisedDeviceByGroupGoogleId(groupGoogleId).then(result=>{
+        const familiargroupid = request.query.groupGoogleId
+        dboperations.getSupervisedDeviceByGroupGoogleId(familiargroupid).then(result=>{
             console.log(result)
             response.json(result)
         })
@@ -124,9 +123,10 @@ router.route("/insertDevice").post((request,response)=> {
     var email = request.query.email;
     var userName = request.query.userName;
     var type = request.query.type;
+    var familiargroupid = request.query.familiargroupid
     
 
-    dboperations.insertDevice(imei,mobileNumber,fcmtoken,email, userName, type).then(result=>{
+    dboperations.insertDevice(imei,mobileNumber,fcmtoken,email, userName, type, familiargroupid).then(result=>{
         console.log(result)
         response.json(result)
     })
@@ -137,9 +137,11 @@ router.route("/insertCoordinates").post((request,response)=> {
     var longitude = request.query.longitude;
     var latitude = request.query.latitude;
     var deviceId = request.query.deviceId;
-    
+    var familiarGroupId = request.query.familiarGroupId;
+
     dboperations.insertCoordinates(datetime,longitude,latitude,deviceId).then(result=>{
-        //console.log(result)
+        console.log(result)
+        fcmApp.sendCoordinatesByFamiliarGroup(result.coordinatesid, familiarGroupId, datetime, longitude, latitude)
         response.json(result)
     })
 })

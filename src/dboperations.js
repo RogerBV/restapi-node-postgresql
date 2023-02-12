@@ -21,33 +21,34 @@ const pool = new Pool({
 async function getCoordinates(deviceId) {
     try{
         const response = await pool.query("SELECT * FROM Coordinates WHERE deviceId="+deviceId)
+        console.log(response.rows)
         return response.rows;
     }catch(error){
         console.log(error);
     }
 }
 
-async function getDevicesByGroupGoogleId(groupGoogleId){
+async function getDevicesByGroupGoogleId(familiargroupid){
     try{
-        const response = await pool.query("SELECT * FROM Device WHERE groupgoogleid="+groupGoogleId)
+        const response = await pool.query("SELECT * FROM Device WHERE familiargroupid="+familiargroupid)
         return response.rows;
     }catch(error){
         console.log(error);
     }
 }
 
-async function getSupervisorDevicesByGroupGoogleId(groupGoogleId){
+async function getSupervisorDevicesByGroupGoogleId(familiargroupid){
     try{
-        const response = await pool.query("SELECT * FROM Device WHERE groupgoogleid="+groupGoogleId+" and type = 2")
+        const response = await pool.query("SELECT * FROM Device WHERE familiargroupid="+familiargroupid+" and usertype = 2")
         return response.rows;
     }catch(error){
         console.log(error);
     }
 }
 
-async function getSupervisedDeviceByGroupGoogleId(groupGoogleId){
+async function getSupervisedDeviceByGroupGoogleId(familiargroupid){
     try{
-        const response = await pool.query("SELECT * FROM Device WHERE groupgoogleid="+groupGoogleId+" and type = 1")
+        const response = await pool.query("SELECT * FROM Device WHERE familiargroupid="+familiargroupid+" and usertype = 1")
         return response.rows[0].deviceid;
     }catch(error){
         console.log(error);
@@ -93,15 +94,16 @@ async function getHomesByDeviceId(deviceId) {
 }
 
 
-async function insertDevice(imei, mobileNumber, fcmtoken, email, userName, type){
+async function insertDevice(imei, mobileNumber, fcmtoken, email, userName, type, familiargroupid){
     try {
         const responseSelect = await pool.query("SELECT * FROM Device WHERE imei='"+imei+"'")
 
         if(responseSelect.rows == 0)
         {
             var result = await pool.query(
-                `INSERT INTO Device (imei,mobilenumber,fcmtoken,email,userName, usertype)  
-                 VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`, [imei,mobileNumber,fcmtoken,email, userName, type]); // sends queries
+                `INSERT INTO Device (imei,mobilenumber,fcmtoken,email,userName, usertype, familiargroupid)  
+                 VALUES ($1, $2, $3, $4, $5, $6, 1) RETURNING *`, [imei,mobileNumber,fcmtoken,email, userName, type]); // sends queries
+            console.log(result.rows[0])
             return result.rows[0];
         }else{
             
